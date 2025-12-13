@@ -13,6 +13,11 @@ namespace AutoCommandSender
         public override string Author => "atombombasi_55908";
         public override Version Version => new Version(1, 0, 0);
 
+        private const string TagWaiting = "AutoCommandSender_Waiting";
+        private const string TagRoundStart = "AutoCommandSender_RoundStart";
+        private const string TagRoundEnd = "AutoCommandSender_RoundEnd";
+        private const string TagPlayerJoin = "AutoCommandSender_PlayerJoin";
+
         public override void OnEnabled()
         {
             if (!Config.IsEnabled)
@@ -27,8 +32,6 @@ namespace AutoCommandSender
             Exiled.Events.Handlers.Player.Verified += OnPlayerVerified;
 
             Log.Info("AutoCommandSender AKTİF → Tüm eventlerde sınırsız komut + {player} desteği!");
-
-            ExecuteCommands(Config.CommandsOnWaiting);
             base.OnEnabled();
         }
 
@@ -39,24 +42,30 @@ namespace AutoCommandSender
             Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
             Exiled.Events.Handlers.Player.Verified -= OnPlayerVerified;
 
+            Timing.KillCoroutines(TagWaiting);
+            Timing.KillCoroutines(TagRoundStart);
+            Timing.KillCoroutines(TagRoundEnd);
+            Timing.KillCoroutines(TagPlayerJoin);
+
             base.OnDisabled();
         }
 
-        private void OnWaitingForPlayers() => ExecuteCommands(Config.CommandsOnWaiting);
-        private void OnRoundStarted() => ExecuteCommands(Config.CommandsOnRoundStart);
-        private void OnRoundEnded(RoundEndedEventArgs ev) => ExecuteCommands(Config.CommandsOnRoundEnd);
+        private void OnWaitingForPlayers() => ExecuteCommands(Config.CommandsOnWaiting, TagWaiting);
+        private void OnRoundStarted() => ExecuteCommands(Config.CommandsOnRoundStart, TagRoundStart);
+        private void OnRoundEnded(RoundEndedEventArgs ev) => ExecuteCommands(Config.CommandsOnRoundEnd, TagRoundEnd);
 
         private void OnPlayerVerified(VerifiedEventArgs ev)
         {
             if (ev.Player != null)
-                ExecuteCommands(Config.CommandsOnPlayerJoin, ev.Player);
+                ExecuteCommands(Config.CommandsOnPlayerJoin, TagPlayerJoin, ev.Player);
         }
 
-        private void ExecuteCommands(List<string> list, Player player = null)
+        private void ExecuteCommands(List<string> list, string tag, Player player = null)
         {
             if (list == null || list.Count == 0) return;
 
-            Timing.RunCoroutine(RunCommands(list, player));
+            Timing.KillCoroutines(tag);
+            Timing.RunCoroutine(RunCommands(list, player), tag);
         }
 
         private IEnumerator<float> RunCommands(List<string> commands, Player player)
