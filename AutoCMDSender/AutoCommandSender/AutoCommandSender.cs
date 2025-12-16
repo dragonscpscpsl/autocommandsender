@@ -11,7 +11,7 @@ namespace AutoCommandSender
     {
         public override string Name => "AutoCommandSender";
         public override string Author => "atombombasi_55908";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
 
         private const string TagWaiting = "AutoCommandSender_Waiting";
         private const string TagRoundStart = "AutoCommandSender_RoundStart";
@@ -76,9 +76,14 @@ namespace AutoCommandSender
 
                 string final = cmd.Trim();
 
-                if (player != null && final.IndexOf("{player}", StringComparison.OrdinalIgnoreCase) >= 0)
+                if (final.IndexOf("{player}", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    final = final.Replace("{player}", player.Nickname);
+                    if (player == null)
+                    {
+                        if (Config.Debug) Log.Warn($"[AutoCmd] {player} yok → Komut atlandı: {final}");
+                        continue;
+                    }
+                    final = ReplaceIgnoreCase(final, "{player}", player.Nickname);
                 }
 
                 try
@@ -93,6 +98,24 @@ namespace AutoCommandSender
 
                 yield return Timing.WaitForSeconds(0.5f);
             }
+        }
+        private static string ReplaceIgnoreCase(string source, string oldValue, string newValue)
+        {
+            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(oldValue))
+                return source;
+
+            int startIndex = 0;
+            while (true)
+            {
+                int index = source.IndexOf(oldValue, startIndex, StringComparison.OrdinalIgnoreCase);
+                if (index < 0)
+                    break;
+
+                source = source.Substring(0, index) + newValue + source.Substring(index + oldValue.Length);
+                startIndex = index + newValue.Length;
+            }
+
+            return source;
         }
     }
 
