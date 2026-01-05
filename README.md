@@ -1,6 +1,7 @@
 # AutoCommandSender
 Exiled 9.10.2 SCPSL 14.2.2
-
+[![Version](https://img.shields.io/github/v/release/dragonscpscpsl/autocommandsender?sort=semver&label=Version)](https://github.com/dragonscpscpsl/autocommandsender/releases/)
+[![Downloads](https://img.shields.io/github/downloads/dragonscpscpsl/autocommandsender/total?label=Downloads)](https://github.com/dragonscpscpsl/autocommandsender/releases/)
 ![Alt](https://repobeats.axiom.co/api/embed/0480f0d8c5510ab64353908c8ea6261017b136e5.svg "Repobeats analytics image")
 
 # English
