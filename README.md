@@ -15,7 +15,7 @@ So first install the plugin it should say enabled or aktif edildi(enabled) and o
 So how does it work
 it uses ExecuteCommand to send the command.
 
-# Readme Turish
+# Readme Turkish
 
 Eklenti nasıl kullanılır
 
