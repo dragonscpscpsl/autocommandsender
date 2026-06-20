@@ -1,5 +1,6 @@
 # AutoCommandSender
 Exiled 9.10.2 SCPSL 14.2.2
+SOURCE CODE ISNT UPDATED!!!
 ---
 [![Version](https://img.shields.io/github/v/release/dragonscpscpsl/autocommandsender?sort=semver&label=Version)](https://github.com/dragonscpscpsl/autocommandsender/releases/)
 [![Downloads](https://img.shields.io/github/downloads/dragonscpscpsl/autocommandsender/total?label=Downloads)](https://github.com/dragonscpscpsl/autocommandsender/releases/)
